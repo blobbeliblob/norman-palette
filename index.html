@@ -57,6 +57,16 @@
         -webkit-font-smoothing: antialiased;
       }
 
+      ::selection {
+        background: var(--secondary);
+        color: var(--background);
+      }
+
+      ::-moz-selection {
+        background: var(--secondary);
+        color: var(--background);
+      }
+
       .page {
         position: relative;
         display: grid;

@@ -1,5 +1,7 @@
 # Norman
 
+[Open the Norman palette website](https://blobbeliblob.github.io/norman-palette/)
+
 **A geometric UI color palette with a little humanity.** Norman is a dark-first palette for Noctalia, built around near-black surfaces, soft neutrals, and a few expressive accents.
 
 ## Noctalia
@@ -55,10 +57,6 @@ The accent colors remain consistent between themes. These surface roles change i
 | Cursor text | `#B3E6D5` | `hsl(160 50% 80%)` |
 | Selection background | `#D9F2EA` | `hsl(160 50% 90%)` |
 | Selection foreground | `#0D261E` | `hsl(160 50% 10%)` |
-
-## Noctalia
-
-The palette is available as [`Norman.json`](Norman.json) and [`Norman Muted.json`](Norman%20Muted.json). The GitHub Pages preview can switch between the normal and muted palettes.
 
 ## Muted palette
 
