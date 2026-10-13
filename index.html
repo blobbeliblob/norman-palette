@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-palette="normal">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,9 +25,20 @@
         --primary: #33cc99;
         --secondary: #f0db75;
         --tertiary: #f0758a;
+        --error: #f07575;
         --hover: #adebd6;
         --body-font: "Satoshi", sans-serif;
         --heading-font: "Playfair Display", Georgia, serif;
+      }
+
+      :root[data-palette="muted"] {
+        --background: #262626;
+        --foreground: #cccccc;
+        --primary: #4db391;
+        --secondary: #d9cc8c;
+        --tertiary: #d98c99;
+        --error: #d98c8c;
+        --hover: #70c2a7;
       }
 
       * {
@@ -153,10 +164,62 @@
         margin: 0;
         color: var(--hover);
         font-family: var(--heading-font);
-        font-size: clamp(1rem, 2vw, 1.4rem);
+        font-size: clamp(1.1rem, 2.2vw, 1.55rem);
         font-weight: 500;
         line-height: 1.45;
         text-align: left;
+      }
+
+      .palette-toggle {
+        position: absolute;
+        z-index: 2;
+        top: clamp(22px, 5vh, 48px);
+        right: clamp(22px, 5vw, 72px);
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        padding: 7px 0 7px 8px;
+        border: 0;
+        background: transparent;
+        color: var(--foreground);
+        font: 500 0.84rem/1 var(--body-font);
+        cursor: pointer;
+      }
+
+      .palette-toggle:focus-visible {
+        border-radius: 6px;
+        outline: 2px solid var(--hover);
+        outline-offset: 4px;
+      }
+
+      .toggle-track {
+        position: relative;
+        width: 40px;
+        height: 23px;
+        border: 1px solid rgb(128 128 128 / 48%);
+        border-radius: 99px;
+        background: #333333;
+        transition: background 160ms ease;
+      }
+
+      .toggle-thumb {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: var(--foreground);
+        transition: transform 160ms ease;
+      }
+
+      .palette-toggle[aria-checked="true"] .toggle-track {
+        background: var(--primary);
+      }
+
+      .palette-toggle[aria-checked="true"] .toggle-thumb {
+        transform: translateX(17px);
+        background: var(--background);
       }
 
       .portrait {
@@ -238,8 +301,13 @@
         .quote {
           top: 20px;
           left: 20px;
-          width: min(220px, 58vw);
-          font-size: clamp(0.88rem, 4vw, 1.1rem);
+          width: min(220px, calc(100vw - 150px));
+          font-size: clamp(0.95rem, 4.2vw, 1.16rem);
+        }
+
+        .palette-toggle {
+          top: 18px;
+          right: 18px;
         }
 
         .portrait {
@@ -282,9 +350,20 @@
   <body>
     <main class="page">
       <blockquote class="quote">“I'm something of a designer myself.”</blockquote>
+      <button
+        class="palette-toggle"
+        id="palette-toggle"
+        type="button"
+        role="switch"
+        aria-label="Muted palette"
+        aria-checked="false"
+      >
+        <span class="toggle-label">Normal</span>
+        <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+      </button>
       <svg class="filter-defs" aria-hidden="true" focusable="false">
         <filter id="secondary-tint" color-interpolation-filters="sRGB">
-          <feFlood flood-color="#F0DB75" result="secondary" />
+          <feFlood id="secondary-tint-color" flood-color="#F0DB75" result="secondary" />
           <feComposite in="secondary" in2="SourceAlpha" operator="in" />
         </filter>
       </svg>
@@ -293,16 +372,16 @@
       <section class="palette" aria-labelledby="title">
         <h1 id="title">Nor<span>man</span></h1>
         <div class="swatches" aria-label="Norman color palette">
-          <button class="swatch" style="--swatch:#0D0D0D" data-name="Surface" data-hex="#0D0D0D" data-hsl="hsl(0 0% 5%)" data-tooltip="Surface · #0D0D0D&#10;hsl(0 0% 5%)" aria-label="Copy Surface, #0D0D0D, hsl(0 0% 5%)"></button>
-          <button class="swatch" style="--swatch:#F2F2F2" data-name="On surface" data-hex="#F2F2F2" data-hsl="hsl(0 0% 95%)" data-tooltip="On surface · #F2F2F2&#10;hsl(0 0% 95%)" aria-label="Copy On surface, #F2F2F2, hsl(0 0% 95%)"></button>
-          <button class="swatch" style="--swatch:#333333" data-name="Surface variant" data-hex="#333333" data-hsl="hsl(0 0% 20%)" data-tooltip="Surface variant · #333333&#10;hsl(0 0% 20%)" aria-label="Copy Surface variant, #333333, hsl(0 0% 20%)"></button>
-          <button class="swatch" style="--swatch:#808080" data-name="Outline" data-hex="#808080" data-hsl="hsl(0 0% 50%)" data-tooltip="Outline · #808080&#10;hsl(0 0% 50%)" aria-label="Copy Outline, #808080, hsl(0 0% 50%)"></button>
-          <button class="swatch" style="--swatch:#4D4D4D" data-name="Shadow" data-hex="#4D4D4D" data-hsl="hsl(0 0% 30%)" data-tooltip="Shadow · #4D4D4D&#10;hsl(0 0% 30%)" aria-label="Copy Shadow, #4D4D4D, hsl(0 0% 30%)"></button>
-          <button class="swatch" style="--swatch:#33CC99" data-name="Primary" data-hex="#33CC99" data-hsl="hsl(160 60% 50%)" data-tooltip="Primary · #33CC99&#10;hsl(160 60% 50%)" aria-label="Copy Primary, #33CC99, hsl(160 60% 50%)"></button>
-          <button class="swatch" style="--swatch:#F0DB75" data-name="Secondary" data-hex="#F0DB75" data-hsl="hsl(50 80% 70%)" data-tooltip="Secondary · #F0DB75&#10;hsl(50 80% 70%)" aria-label="Copy Secondary, #F0DB75, hsl(50 80% 70%)"></button>
-          <button class="swatch" style="--swatch:#F0758A" data-name="Tertiary" data-hex="#F0758A" data-hsl="hsl(350 80% 70%)" data-tooltip="Tertiary · #F0758A&#10;hsl(350 80% 70%)" aria-label="Copy Tertiary, #F0758A, hsl(350 80% 70%)"></button>
-          <button class="swatch" style="--swatch:#ADEBD6" data-name="Hover" data-hex="#ADEBD6" data-hsl="hsl(160 61% 80%)" data-tooltip="Hover · #ADEBD6&#10;hsl(160 61% 80%)" aria-label="Copy Hover, #ADEBD6, hsl(160 61% 80%)"></button>
-          <button class="swatch" style="--swatch:#F07575" data-name="Error" data-hex="#F07575" data-hsl="hsl(0 80% 70%)" data-tooltip="Error · #F07575&#10;hsl(0 80% 70%)" aria-label="Copy Error, #F07575, hsl(0 80% 70%)"></button>
+          <button class="swatch" style="--swatch:#0D0D0D" data-name="Surface" data-normal-hex="#0D0D0D" data-normal-hsl="hsl(0 0% 5%)" data-muted-hex="#262626" data-muted-hsl="hsl(0 0% 15%)" aria-label="Copy Surface, #0D0D0D, hsl(0 0% 5%)"></button>
+          <button class="swatch" style="--swatch:#F2F2F2" data-name="On surface" data-normal-hex="#F2F2F2" data-normal-hsl="hsl(0 0% 95%)" data-muted-hex="#CCCCCC" data-muted-hsl="hsl(0 0% 80%)" aria-label="Copy On surface, #F2F2F2, hsl(0 0% 95%)"></button>
+          <button class="swatch" style="--swatch:#333333" data-name="Surface variant" data-normal-hex="#333333" data-normal-hsl="hsl(0 0% 20%)" data-muted-hex="#262626" data-muted-hsl="hsl(0 0% 15%)" aria-label="Copy Surface variant, #333333, hsl(0 0% 20%)"></button>
+          <button class="swatch" style="--swatch:#808080" data-name="Outline" data-normal-hex="#808080" data-normal-hsl="hsl(0 0% 50%)" data-muted-hex="#808080" data-muted-hsl="hsl(0 0% 50%)" aria-label="Copy Outline, #808080, hsl(0 0% 50%)"></button>
+          <button class="swatch" style="--swatch:#4D4D4D" data-name="Shadow" data-normal-hex="#4D4D4D" data-normal-hsl="hsl(0 0% 30%)" data-muted-hex="#595959" data-muted-hsl="hsl(0 0% 35%)" aria-label="Copy Shadow, #4D4D4D, hsl(0 0% 30%)"></button>
+          <button class="swatch" style="--swatch:#33CC99" data-name="Primary" data-normal-hex="#33CC99" data-normal-hsl="hsl(160 60% 50%)" data-muted-hex="#4DB391" data-muted-hsl="hsl(160 40% 50%)" aria-label="Copy Primary, #33CC99, hsl(160 60% 50%)"></button>
+          <button class="swatch" style="--swatch:#F0DB75" data-name="Secondary" data-normal-hex="#F0DB75" data-normal-hsl="hsl(50 80% 70%)" data-muted-hex="#D9CC8C" data-muted-hsl="hsl(50 50% 70%)" aria-label="Copy Secondary, #F0DB75, hsl(50 80% 70%)"></button>
+          <button class="swatch" style="--swatch:#F0758A" data-name="Tertiary" data-normal-hex="#F0758A" data-normal-hsl="hsl(350 80% 70%)" data-muted-hex="#D98C99" data-muted-hsl="hsl(350 50% 70%)" aria-label="Copy Tertiary, #F0758A, hsl(350 80% 70%)"></button>
+          <button class="swatch" style="--swatch:#ADEBD6" data-name="Hover" data-normal-hex="#ADEBD6" data-normal-hsl="hsl(160 60% 80%)" data-muted-hex="#70C2A7" data-muted-hsl="hsl(160 40% 60%)" aria-label="Copy Hover, #ADEBD6, hsl(160 60% 80%)"></button>
+          <button class="swatch" style="--swatch:#F07575" data-name="Error" data-normal-hex="#F07575" data-normal-hsl="hsl(0 80% 70%)" data-muted-hex="#D98C8C" data-muted-hsl="hsl(0 50% 70%)" aria-label="Copy Error, #F07575, hsl(0 50% 70%)"></button>
         </div>
       </section>
       <span class="sr-only" id="copy-status" aria-live="polite"></span>
@@ -314,6 +393,33 @@
     </main>
     <script>
       const status = document.querySelector("#copy-status");
+      const paletteToggle = document.querySelector("#palette-toggle");
+      const toggleLabel = paletteToggle.querySelector(".toggle-label");
+      const secondaryTint = document.querySelector("#secondary-tint-color");
+      const swatches = [...document.querySelectorAll(".swatch")];
+
+      function setPalette(muted) {
+        const mode = muted ? "muted" : "normal";
+        document.documentElement.dataset.palette = mode;
+        paletteToggle.setAttribute("aria-checked", String(muted));
+        toggleLabel.textContent = muted ? "Muted" : "Normal";
+        secondaryTint.setAttribute("flood-color", muted ? "#D9CC8C" : "#F0DB75");
+
+        swatches.forEach((button) => {
+          const hex = button.dataset[`${mode}Hex`];
+          const hsl = button.dataset[`${mode}Hsl`];
+          button.dataset.hex = hex;
+          button.dataset.hsl = hsl;
+          button.dataset.tooltip = `${button.dataset.name} · ${hex}\n${hsl}`;
+          button.style.setProperty("--swatch", hex);
+          button.setAttribute("aria-label", `Copy ${button.dataset.name}, ${hex}, ${hsl}`);
+        });
+      }
+
+      paletteToggle.addEventListener("click", () => {
+        setPalette(paletteToggle.getAttribute("aria-checked") !== "true");
+      });
+      setPalette(false);
 
       async function copyHex(button) {
         const hex = button.dataset.hex;
@@ -330,15 +436,14 @@
           input.remove();
         }
 
-        const tooltip = button.dataset.tooltip;
         button.dataset.tooltip = `Copied ${hex}`;
         status.textContent = `Copied ${hex} to clipboard`;
         window.setTimeout(() => {
-          button.dataset.tooltip = tooltip;
+          button.dataset.tooltip = `${button.dataset.name} · ${button.dataset.hex}\n${button.dataset.hsl}`;
         }, 1200);
       }
 
-      document.querySelectorAll(".swatch").forEach((button) => {
+      swatches.forEach((button) => {
         button.addEventListener("click", () => copyHex(button));
       });
     </script>
