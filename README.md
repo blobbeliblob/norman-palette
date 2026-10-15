@@ -66,7 +66,7 @@ These are the muted dark-theme UI colors shown when the preview's **Muted** togg
 | --- | --- | --- |
 | Surface | `#262626` | `hsl(0 0% 15%)` |
 | On surface | `#CCCCCC` | `hsl(0 0% 80%)` |
-| Surface variant | `#262626` | `hsl(0 0% 15%)` |
+| Surface variant | `#404040` | `hsl(0 0% 25%)` |
 | Outline | `#808080` | `hsl(0 0% 50%)` |
 | Shadow | `#595959` | `hsl(0 0% 35%)` |
 | Primary | `#4DB391` | `hsl(160 40% 50%)` |
